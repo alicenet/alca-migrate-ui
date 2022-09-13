@@ -1,21 +1,17 @@
-import { Button, Container, Header, Label, Message } from "semantic-ui-react";
+import { Button, Container, Message } from "semantic-ui-react";
 import React, { useContext, useState } from "react";
 import config from "utils";
 import { TabPanesContext } from "contexts";
 import { useSelector } from "react-redux";
 import ethAdapter from "eth/ethAdapter";
-import { BalanceStatus } from "components/balanceStatus/BalanceStatus";
 
 export function Connect() {
 
-    const { generic, constants, string } = config;
+    const { generic, constants } = config;
     const [error, setError] = useState("");
     const { setActiveTabPane } = useContext(TabPanesContext);
-    const { web3Connected, address, alcaBalance, madBalance } = useSelector(state => ({
-        address: state.application.connectedAddress,
+    const { web3Connected } = useSelector(state => ({
         web3Connected: state.application.web3Connected,
-        madBalance: state.application.balances.mad,
-        alcaBalance: state.application.balances.alca
     }));
 
     const connect = () => {
@@ -25,6 +21,7 @@ export function Connect() {
                 setError(err?.error);
             } else {
                 setError("");
+                setActiveTabPane(constants.tabPanes.MIGRATE);
             }
         });
     };
@@ -36,19 +33,8 @@ export function Connect() {
             <Container className="flex flex-col justify-around items-center p-4 min-h-[240px]">
 
                 <div className="text-sm text-center">
-                    {web3Connected ? (<div>
-                        <Header as='h5' content={`${address} connected`} />
-
-                        <Header.Subheader>
-                            Connected balances noted below
-                        </Header.Subheader>
-
-                        <div className="flex justify-center mt-6">
-                            <BalanceStatus row />
-                        </div>
-
-                    </div>
-                    ) : <div>
+                    {web3Connected ? (<></>) : 
+                    <div>
                         <div>
                             Press the button below to connect your web3 wallet
                         </div>
