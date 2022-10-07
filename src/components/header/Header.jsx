@@ -42,11 +42,11 @@ export function Header() {
                     content="Stake"
                 />
 
-                <Menu.Item
+                {/* <Menu.Item
                     className="cursor-pointer"
                     onClick={() => goExtLink("https://lock.alice.net")}
                     content="Lock"
-                />
+                /> */}
 
             </Menu.Item>
 
