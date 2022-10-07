@@ -9,6 +9,17 @@ export function Success() {
 
     const { activeTabPane, setActiveTabPane } = useContext(TabPanesContext);
 
+    const goExtLink = (target) => {
+        let finalTarget = target;
+        if (document.location.href.indexOf('staging') !== -1 || document.location.href.indexOf("localhost") !== -1) {
+            let tarSplit = target.split('://');
+            let alcSplit = tarSplit[1].split(".alice.net");
+            let alcTarget = alcSplit[0];
+            finalTarget = "https://" + alcTarget + ".staging.alice.net";
+        }
+        window.open(finalTarget, '_blank').focus()
+    }
+
     const { alcaBalance, madBalance, approvalHash, migrationHash, migrationAmount, alcaExchangeRate, prevMadBal, prevAlcaBal } = useSelector(state => ({
         approvalHash: state.application.approvalHash,
         migrationHash: state.application.migrationHash,
@@ -51,7 +62,7 @@ export function Success() {
                 <div className="flex justify-between items-center h-6">
                     <div className="mr-2"><b>&nbsp;Approval Hash:</b></div> {approvalHash ? (<a className="text-blue-500 underline" target="_blank" rel="noopener noreferrer"
                         href={`https://etherscan.io/tx/${approvalHash}`}> {approvalHash} <Icon name="external" className="m-0 h-full" /> </a>) : "N/A"}
-                    
+
                 </div>
 
                 <div className="mt-2 flex items-center justify-between h-6">
@@ -63,10 +74,10 @@ export function Success() {
 
             <div className="flex justify-between min-w-[420px]">
                 <div>
-                    <Button secondary as={"a"} content="Visit alice.net" target="_blank" rel="noopener noreferrer" href="https://alice.net" />
-                </div>
-                <div>
                     <Button secondary content="Migrate More Tokens" onClick={() => setActiveTabPane(tabPanes.MIGRATE)} />
+                </div>
+                <div className="ml-4">
+                    <Button primary content="Stake ALCA" onClick={() => goExtLink("https://stake.alice.net")} />
                 </div>
             </div>
 

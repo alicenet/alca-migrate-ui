@@ -113,6 +113,7 @@ export const updateBalances = tokenType => {
         }
 
         if (madBal.error || madAllowance.error) {
+            console.log(madBal.error, madAllowance.error)
             toast("Error fetching MAD balance.", { type: "error", position: "bottom-center", autoClose: 1000 })
         }
 
