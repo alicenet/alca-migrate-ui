@@ -1,5 +1,4 @@
 import React, { createContext } from "react";
-import { useDarkreader } from "react-darkreader";
 
 export const DarkThemeContext = createContext(null);
 
@@ -10,7 +9,7 @@ export const DarkThemeContext = createContext(null);
  */
 export const DarkThemeProvider = (props) => {
 
-    const [isDark, { toggle }] = useDarkreader(false);
+    const [isDark, toggle] = React.useState(false);
 
     return (
         <DarkThemeContext.Provider value={{ isDark, toggle }}>
