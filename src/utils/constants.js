@@ -1,4 +1,4 @@
-import { AllowTokens, Connect, PhishingBox, Success, SwapTokens, Introduction } from "components";
+import { Connect, PhishingBox, Success, SwapTokens, Introduction } from "components";
 
 export const LINKS = {
     GITHUB: "https://github.com/alicenet",
