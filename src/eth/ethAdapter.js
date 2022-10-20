@@ -312,13 +312,6 @@ class EthAdapter {
         });
     }
 
-    async getPublicStakingAllowance(accountIndex = 0) {
-        return this._try(async () => {
-            let allowance = await this._tryCall("AToken", "allowance", [await this._getAddressByIndex(accountIndex), this.contracts["PublicStaking"].address]);
-            return allowance.toString();
-        });
-    }
-
     async getMadTokenToALCAExchangeRate(madAmt) {
         return this._try(async () => {
             let exchangeRate = await this._tryCall("AToken", "convert", [madAmt]);
