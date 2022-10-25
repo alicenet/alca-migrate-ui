@@ -20,7 +20,7 @@ const TabPane = ({ name, component, className, activeTabPane, tabPaneIndex }) =>
 
 export function SwapActions() {
 
-    const { constants, string } = config;
+    const { constants } = config;
     const { activeTabPane, setActiveTabPane } = useContext(TabPanesContext);
     const { web3Connected, address } = useSelector(state => ({
         address: state.application.connectedAddress,
@@ -44,16 +44,16 @@ export function SwapActions() {
 
     return (
         <Container className="relative">
-            <div className="absolute right-0 top-[2px] items-center">
+            <div className="absolute -right-1 top-[2px] items-center">
                 {web3Connected && address && (
                     <Popup
                         position="top center"
                         content="Disconnect Wallet"
                         trigger={
-                            <Button icon labelPosition="left" className="m-0" onClick={disconnect}>
+                            <Button icon labelPosition="left" className="m-1" onClick={disconnect}>
                                 <Icon name="remove" size="small" />
                                 <div className="text-sm">
-                                    Connected:
+                                    Connected:&nbsp;
                                     {splitStringWithEllipsis(address, 4)}
                                 </div>
                             </Button>

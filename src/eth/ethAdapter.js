@@ -203,6 +203,16 @@ class EthAdapter {
         return contractAddress;
     }
 
+    async _getContractAddresses() {
+        for (let contract in this.contracts) {
+            if (contract === "Factory" || contract === "MadToken") { continue } // Don't overwrite factory address or legacy MadToken address
+            let address = await this._lookupContractName(contract);
+            this.contracts[contract].address = address;
+            console.log(contract, address);
+        }
+        console.log("Contract addresses populated from lookup()", this.contracts);
+    }
+
 
     /////////////////////
     /* Public Methods  */
@@ -223,6 +233,10 @@ class EthAdapter {
             store.dispatch(APPLICATION_ACTIONS.updateNetwork(String(parseInt(window.ethereum.chainId, 16))));
             store.dispatch(APPLICATION_ACTIONS.setWeb3Connected(true));
             store.dispatch(APPLICATION_ACTIONS.setConnectedAddress(connectedAddress));
+
+            // Get contract addresses from FACTORY lookup()
+            await this._getContractAddresses()
+
             cb(null, connectedAddress);
             // Setup balance listener
             this._balanceLoop();
@@ -293,15 +307,8 @@ class EthAdapter {
      */
     async getMadTokenAllowance(accountIndex = 0) {
         return this._try(async () => {
-            let allowance = await this._tryCall("MadToken", "allowance", [await this._getAddressByIndex(accountIndex), CONTRACT_ADDRESSES.AToken]);
+            let allowance = await this._tryCall("MadToken", "allowance", [await this._getAddressByIndex(accountIndex), this.contracts["AToken"].address]);
             return allowance;
-        });
-    }
-
-    async getPublicStakingAllowance(accountIndex = 0) {
-        return this._try(async () => {
-            let allowance = await this._tryCall("AToken", "allowance", [await this._getAddressByIndex(accountIndex), CONTRACT_ADDRESSES.PublicStaking]);
-            return allowance.toString();
         });
     }
 
@@ -332,14 +339,14 @@ class EthAdapter {
      */
     async sendAllowanceRequest(unformattedAmount) {
         return await this._try(async () => {
-            let tx = await this._trySend("MadToken", "approve", [CONTRACT_ADDRESSES.AToken, ethers.utils.parseEther(unformattedAmount)]);
+            let tx = await this._trySend("MadToken", "approve", [this.contracts["AToken"].address, ethers.utils.parseEther(unformattedAmount)]);
             return tx;
         })
     }
 
     async sendStakingAllowanceRequest() {
         return await this._try(async () => {
-            let tx = await this._trySend("AToken", "approve", [CONTRACT_ADDRESSES.PublicStaking, ethers.BigNumber.from("0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF")])
+            let tx = await this._trySend("AToken", "approve", [this.contracts["AToken"].address, ethers.BigNumber.from("0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF")])
             return tx;
         })
     }

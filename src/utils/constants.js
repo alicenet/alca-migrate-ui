@@ -1,8 +1,8 @@
-import { AllowTokens, Connect, PhishingBox, Success, SwapTokens, Introduction } from "components";
+import { Connect, PhishingBox, Success, SwapTokens, Introduction } from "components";
 
 export const LINKS = {
     GITHUB: "https://github.com/alicenet",
-    WHITEPAPER: "",
+    WHITEPAPER: "https://github.com/alicenet/whitepaper/blob/main/alicenet.pdf",
     COMMUNITY: "",
     DISCORD: "https://discord.gg/bkhW2KUWDu",
     TWITTER: "https://mobile.twitter.com/AliceNetChain",
