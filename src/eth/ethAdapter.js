@@ -17,16 +17,16 @@ class EthAdapter {
     /* Private Methods -- Scroll down for public methods */
     //////////////////////////////////////////////////////
     constructor() {
-        this.accounts = []; // Web3 Accounts List 
+        this.accounts = []; // Web3 Accounts List
         this.provider = null; // Web3 Provider -- Populated on successful _connectToWeb3Wallet()
         this.signer = null; // Web3 Signer -- Populated on successful _connectToWeb3Wallet()
         this.contracts = config.CONTRACTS; // Contracts from config
         this._setupWeb3Listeners();
         this.timeBetweenBalancePolls = 7500;
-        
+
         // Setup RPC provider
         this.provider = new ethers.providers.JsonRpcProvider(config.RPC.URL);
-        
+
         console.debug("EthAdapter Init: ", this);
     }
 
@@ -36,10 +36,8 @@ class EthAdapter {
     async _balanceLoop() {
         let accts = await this.provider.send("eth_requestAccounts", []); // Request accounts
         if (accts.length === 0) {
-            console.log("balfail")
             return;
         }
-        console.log("BALANCE")
         this.updateBalances();
         setTimeout(this._balanceLoop.bind(this), this.timeBetweenBalancePolls);
     }
@@ -208,9 +206,7 @@ class EthAdapter {
             if (contract === "Factory" || contract === "MadToken") { continue } // Don't overwrite factory address or legacy MadToken address
             let address = await this._lookupContractName(contract);
             this.contracts[contract].address = address;
-            console.log(contract, address);
         }
-        console.log("Contract addresses populated from lookup()", this.contracts);
     }
 
 

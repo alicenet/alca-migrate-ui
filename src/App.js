@@ -13,7 +13,6 @@ function App() {
 
         const debugPrint = (ev) => {
             if (ev.keyCode === 68) {
-                console.log("Debug Printout:", state);
                 return;
             }
         }
